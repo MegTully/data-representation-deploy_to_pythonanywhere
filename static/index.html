@@ -1,0 +1,297 @@
+<html>
+    <head>
+        <title>View Christmas Movies</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+       
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    </head>
+    <body>
+        <h1>Christmas Movies</h1>
+        
+        <div><button id="button-showCreate" onclick="showCreate()">Create a Christmas Movie</button><br/><br/></div>
+        <div>
+            <table class="table" id="movieTable" border="1">
+                <tr>
+                    <th>id</th>
+                    <th>Title</th>
+                    <th>Genre</th>
+                    <th>Update</th>
+                    <th>Delete</th>
+                </tr>
+                <tr id="1">
+                    <td>1</td>
+                    <td>The Holiday</td>
+                    <td>Romantic/Comedy</td>
+                    <td><button onclick="showUpdate(this)">update</button></td>
+                    <td><button onclick="doDelete(this)">delete</button></td>
+                </tr>
+                <tr id="2">
+                    <td>2</td>
+                    <td>Miracle on 34th Street</td>
+                    <td>Drama</td>
+                    <td><button onclick="showUpdate(this)">update</button></td>
+                    <td><button onclick="doDelete(this)">delete</button></td>
+                </tr>
+                <tr id="3">
+                    <td>3</td>
+                    <td>The Polar Express</td>
+                    <td>Family</td>
+                    <td><button onclick="showUpdate(this)">update</button></td>
+                    <td><button onclick="doDelete(this)">delete</button></td>
+                </tr>
+                <tr id="4">
+                    <td>4</td>
+                    <td>A Christmas Carol</td>
+                    <td>Family</td>
+                    <td><button onclick="showUpdate(this)">update</button></td>
+                    <td><button onclick="doDelete(this)">delete</button></td>
+                </tr>
+                <tr id="5">
+                    <td>5</td>
+                    <td>Its a Wonderful Life</td>
+                    <td>Drama</td>
+                    <td><button onclick="showUpdate(this)">update</button></td>
+                    <td><button onclick="doDelete(this)">delete</button></td>
+                </tr>
+                <tr id="6">
+                    <td>6</td>
+                    <td>Elf</td>
+                    <td>Family</td>
+                    <td><button onclick="showUpdate(this)">update</button></td>
+                    <td><button onclick="doDelete(this)">delete</button></td>
+                </tr>
+                <tr id="7">
+                    <td>7</td>
+                    <td>Home Alone 1</td>
+                    <td>Comedy</td>
+                    <td><button onclick="showUpdate(this)">update</button></td>
+                    <td><button onclick="doDelete(this)">delete</button></td>
+                </tr>
+                <tr id="8">
+                    <td>8</td>
+                    <td>Home Alone 2</td>
+                    <td>Comedy</td>
+                    <td><button onclick="showUpdate(this)">update</button></td>
+                    <td><button onclick="doDelete(this)">delete</button></td>
+                </tr>
+                <tr id="9">
+                    <td>9</td>
+                    <td>Home Alone 3</td>
+                    <td>Comedy</td>
+                    <td><button onclick="showUpdate(this)">update</button></td>
+                    <td><button onclick="doDelete(this)">delete</button></td>
+                </tr>
+                <tr id="10">
+                    <td>10</td>
+                    <td>The Grinch</td>
+                    <td>Family</td>
+                    <td><button onclick="showUpdate(this)">update</button></td>
+                    <td><button onclick="doDelete(this)">delete</button></td>
+                </tr>
+                
+        </table>
+        <br/>
+        </div>
+        <div id = 'createUpdateForm' style="display:none">
+            <h2><span id="createLabel">Create a</span> <span id="updateLabel">Update this</span> Movie</h2>
+            <input type="hidden" name="id"/>
+            Title <input type="text" name="title"><br/>
+            genre <input type="text" name="genre"><br/>
+            <span><button id="button-doCreate" onclick="doCreate()">Create</button></span>
+            <span><button id="button-doUpdate" onclick="doUpdate()">Update</button></span>
+        </div>
+    </body>
+    <script>
+        function showCreate(){
+            document.getElementById('button-showCreate').style.display="none"
+            document.getElementById('movieTable').style.display="none"
+
+            document.getElementById('createUpdateForm').style.display="block"
+
+            document.getElementById('createLabel').style.display="inline"
+            document.getElementById('updateLabel').style.display="none"
+            document.getElementById('button-doCreate').style.display="block"
+            document.getElementById('button-doUpdate').style.display="none"
+        }
+        function doCreate(){
+        var form = document.getElementById('createUpdateForm')
+
+        var movie = {}
+       
+        movie.title = form.querySelector('input[name="title"]').value
+        movie.genre = form.querySelector('input[name="genre"]').value
+        console.log(JSON.stringify(movie))
+        createMovieAjax(movie)
+        }
+        
+        function clearForm(){
+            var form = document.getElementById('createUpdateForm')
+          
+            form.querySelector('input[name="genre"]').value = ''
+            form.querySelector('input[name="title"]').value = ''
+        }
+        function getMovieFromForm(){
+            var form = document.getElementById('createUpdateForm')
+            var movie = {}
+            movie.id=form.querySelector('input[name="id"]').value
+            movie.title=form.querySelector('input[name="title"]').value
+            movie.genre=form.querySelector('input[name="genre"]').value
+            console.log(JSON.stringify(movie))
+            return movie
+        }
+        function addMovieToTable(movie){
+            var tableElement = document.getElementById('movieTable')
+            var rowElement = tableElement.insertRow(-1)
+
+            rowElement.setAttribute('id',movie.id)
+
+            var cell1 = rowElement.insertCell(0);
+            cell1.innerHTML = movie.id
+            var cell2 = rowElement.insertCell(1);
+            cell2.innerHTML = movie.title
+            var cell3 = rowElement.insertCell(2);
+            cell3.innerHTML = movie.genre
+            var cell5 = rowElement.insertCell(3);
+            cell5.innerHTML = '<button onclick="showUpdate(this)">Update</button>'
+            var cell6 = rowElement.insertCell(4);
+            cell6.innerHTML='<button onclick=doDelete(this)>delete</button>'
+        }
+        function getMovieFromRow(rowElement){
+            var movie = {}
+            movie.id = rowElement.getAttribute('id')
+            movie.title = rowElement.cells[1].firstChild.textContent
+            movie.genre = rowElement.cells[2].firstChild.textContent
+            return movie
+        }
+        function populateFormWithMovie(movie){
+            var form = document.getElementById('createUpdateForm')
+            form.querySelector('input[name="id"]').disabled = true
+            form.querySelector('input[name="id"]').value = movie.id
+            form.querySelector('input[name="title"]').value = movie.title
+            form.querySelector('input[name="genre"]').value = movie.genre
+            return movie
+        }
+        function showUpdate(buttonElement){
+            document.getElementById("createUpdateForm").style.display = "block"
+           
+            document.getElementById("button-doCreate").style.display = "none"
+            document.getElementById("button-doUpdate").style.display = "block"
+            document.getElementById("createLabel").style.display = "none"
+            document.getElementById("updateLabel").style.display = "inline"
+
+            document.getElementById("button-showCreate").style.display = "none"
+            document.getElementById("movieTable").style.display = "none"
+
+            var rowElement = buttonElement.parentNode.parentNode
+        // these is a way of finding the closest <tr> which would safer, closest()
+        
+            var movie = getMovieFromRow(rowElement)
+            populateFormWithMovie(movie)
+        }
+        function setMovieInRow(rowElement,movie){
+            rowElement.cells[0].firstChild.textContent = movie.id
+            rowElement.cells[1].firstChild.textContent = movie.title
+            rowElement.cells[2].firstChild.textContent = movie.genre
+        }
+        function doUpdate(){
+            var movie = getMovieFromForm();
+            var rowElement = document.getElementById(movie.id);
+            updateMovieAjax(movie);
+            setMovieInRow(rowElement,movie);
+            clearForm();
+            showViewAll();
+        }
+        function doDelete(r){
+            var tableElement = document.getElementById('movieTable');
+            var rowElement = r.parentNode.parentNode;
+            var index = rowElement.rowIndex;
+            deleteMovieAjax(rowElement.getAttribute("id"));
+            tableElement.deleteRow(index);
+        }
+        function showViewAll(){
+            document.getElementById("createUpdateForm").style.display = "none"
+           
+            document.getElementById("button-showCreate").style.display = "block"
+            document.getElementById("movieTable").style.display = "block"
+            
+        }
+
+        function getAllAjax(){
+            $.ajax({
+                "url": "/ChristmasMovies",
+                "method":"GET",
+                "data":"",
+                "dataType": "JSON",
+                "success":function(result){
+                    //console.log(result);
+                    for (movie of result){
+                        addMovieToTable(movie);
+                    }
+
+                },
+                "error":function(xhr,status,error){
+                    console.log("error: "+status+" msg:"+error);
+                }
+            });
+
+        }
+        function createMovieAjax(movie){
+            console.log(JSON.stringify(movie));
+            $.ajax({
+                "url": "/ChristmasMovies",
+                "method":"POST",
+                "data":JSON.stringify(movie),
+                "dataType": "JSON",
+                contentType: "application/json; charset=utf-8",
+                "success":function(result){
+                    //console.log(result);
+                    movie.id = result.id
+                    addMovieToTable(movie)
+                    clearForm()
+                    showViewAll()
+                },
+                "error":function(xhr,status,error){
+                    console.log("error: "+status+" msg:"+error);
+                }
+            });
+        }
+        function updateMovieAjax(movie){
+            console.log(JSON.stringify(movie));
+            $.ajax({
+                "url": "/ChristmasMovies/"+encodeURI(movie.id),
+                "method":"PUT",
+                "data":JSON.stringify(movie),
+                "dataType": "JSON",
+                contentType: "application/json; charset=utf-8",
+                "success":function(result){
+                   // console.log(result);
+
+                },
+                "error":function(xhr,status,error){
+                    console.log("error: "+status+" msg:"+error);
+                }
+            });
+        }
+        function deleteMovieAjax(id){
+
+            //console.log(JSON.stringify('deleting '+id));
+            $.ajax({
+                "url": "/ChristmasMovies/"+encodeURI(id),
+                "method":"DELETE",
+                "data":"",
+                "dataType": "JSON",
+                contentType: "application/json; charset=utf-8",
+                "success":function(result){
+                    //console.log(result);
+
+                },
+                "error":function(xhr,status,error){
+                    console.log("error: "+status+" msg:"+error);
+                }
+            });
+        }
+        getAllAjax();
+
+    </script>    
+    </html>
